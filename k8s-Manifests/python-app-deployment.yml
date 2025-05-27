@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nagham-python-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nagham-python-app
+  template:
+    metadata:
+      labels:
+        app: nagham-python-app
+    spec:
+      containers:
+      - name: python-container
+        image: us-central1-docker.pkg.dev/iti-final-task/nagham-docker-repo/nagham-python-app:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: REDIS_HOST
+          value: nagham-redis
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_DB
+          value: "0"
+        - name: PORT
+          value: "8000"
+        - name: HOST
+          value: "0.0.0.0"
+        - name: ENVIRONMENT
+          value: "PROD"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nagham-python-service
+spec:
+  selector:
+    app: nagham-python-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: NodePort

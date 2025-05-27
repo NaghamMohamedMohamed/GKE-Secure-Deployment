@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nagham-python-ingress
+  annotations:
+    kubernetes.io/ingress.class: "gce"  # GCP Load Balancer
+spec:
+  ingressClassName: gce               
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nagham-python-service
+                port:
+                  number: 80
