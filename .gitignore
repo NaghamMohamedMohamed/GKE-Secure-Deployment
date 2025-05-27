@@ -3,7 +3,7 @@
 /Terraform/*.backup
 
 # Ignore Files with Secrets
-.env
+App/.env
 *.json
 
 # Ignore IDE or Editor Specific Files
