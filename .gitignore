@@ -1,0 +1,11 @@
+/Terraform/*.tfstate
+/Terraform/.*
+/Terraform/*.backup
+
+# Ignore Files with Secrets
+.env
+*.json
+
+# Ignore IDE or Editor Specific Files
+.vscode/
+.idea/
