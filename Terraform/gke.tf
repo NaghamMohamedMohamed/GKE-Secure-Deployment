@@ -39,7 +39,7 @@ resource "google_container_cluster" "gke_cluster" {
         "https://www.googleapis.com/auth/cloud-platform"
         ]
         service_account = google_service_account.gke_node_sa.email
-        tags = ["gke-node"]
+        tags = ["${var.prefix}-gke-node"]
 
         # Ensure no external IP ( As it is private cluster )
         shielded_instance_config {
