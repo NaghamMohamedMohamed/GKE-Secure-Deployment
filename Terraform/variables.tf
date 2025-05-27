@@ -1,7 +1,3 @@
-# variable "key_file" {
-#     default = "./terraform-key.json"
-# }
-
 variable "project_id" {
   default = "iti-final-task"
 }
