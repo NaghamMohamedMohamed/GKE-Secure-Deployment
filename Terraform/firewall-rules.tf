@@ -20,3 +20,23 @@ resource "google_compute_firewall" "gke_master_access" {
   }
   target_tags = ["${var.prefix}-gke-node"]  
 }
+
+# Enable HTTP (port 80) ingress to the GKE nodes
+resource "google_compute_firewall" "allow_gke_ingress_http" {
+  name    = "${var.prefix}-allow-gke-ingress-http"
+  network       = google_compute_network.vpc.id
+
+  # Allow traffic from anywhere on TCP port 80
+  source_ranges = ["0.0.0.0/0"]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+
+  direction = "INGRESS"
+  priority  = 1000
+
+  target_tags = ["${var.prefix}-gke-node"] 
+
+}
