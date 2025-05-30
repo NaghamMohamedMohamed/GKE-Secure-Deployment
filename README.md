@@ -23,7 +23,7 @@ This project provisions a secure, isolated, and production-ready **Kubernetes en
   * Access to the GKE cluster is allowed **only from the management subnet**.
 * Code for the GKE app deployment is pulled from an external repository and pushed to **Google Artifact Registry** (GAR).
 
-[]
+
 ## 📋 Prerequisites
 
 * [Terraform](https://developer.hashicorp.com/terraform/downloads) >= 1.3.0
