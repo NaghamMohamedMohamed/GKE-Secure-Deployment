@@ -18,11 +18,14 @@ This project provisions a secure, isolated, and production-ready **Kubernetes en
   * The restricted subnet has **no internet access**.
   * **Artifact Registry (private)** is used to store and serve Docker images for GKE.
   * Public access is only allowed via an **HTTP Load Balancer**.
-  * Authorized networks feature enabled.
+  * Authorized networks feature enabled ( Explicitly allow specific IPs or CIDR blocks to allow secure , limited access the GKE API server **(control plane : Master Endpoint )** ).
   * Docker images are pulled **only** from **private Artifact Registry**.
   * Access to the GKE cluster is allowed **only from the management subnet**.
 * Code for the GKE app deployment is pulled from an external repository and pushed to **Google Artifact Registry** (GAR).
 
+## Architecture
+
+![Project Architecture](Project-Architecture.png)
 
 ## 📋 Prerequisites
 
@@ -111,27 +114,27 @@ docker push [REGION]-docker.pkg.dev/[PROJECT_ID]/[REPO_NAME]/[IMAGE_NAME]:latest
 
 ## 🔑 6. Connect to Private VM & Access GKE
 
-### A. SSH into Private VM 
+#### A. SSH into Private VM 
 
 ```bash
 gcloud compute ssh [VM_NAME] --zone=[ZONE] --tunnel-through-iap
 
 ```
-### B. Install Required Tools ( on the VM )
+#### B. Install Required Tools ( on the VM )
 
 ```bash
 sudo apt-get update 
 sudo apt-get install -y kubectl 
 sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
 ```
-### C. Verify Access to the GKE Cluster
+#### C. Verify Access to the GKE Cluster
 
 ```bash
 kubectl get nodes
 kubectl get pods -A
 ```
 
-### D. Copy your files to the private vm : 
+#### D. Copy your files to the Private VM : 
 
 ```bash
 gcloud compute scp ./python-app-deployment.yml [VM_NAME]:/home/[USER]/ --zone=[ZONE] --tunnel-through-iap
@@ -143,6 +146,7 @@ gcloud compute scp ./ingress.yml [VM_NAME]:/home/[USER]/ --zone=[ZONE] --tunnel-
 ## 🚀 7. Deploy to GKE ( From inside the VM )
 
 ```bash
+# To connect to the GKE Cluster
 gcloud container clusters get-credentials [CLUSTER_NAME] --region [REGION] 
 
 kubectl apply -f k8s-Manifests/python-app-deployment.yml
@@ -168,6 +172,6 @@ kubectl get svc
 kubectl get ingress
 ```
 - This will output an EXTERNAL IP , which is the HTTP Load Balancer IP that exposes your app publicly ( Access the app via http://<EXTERNAL_IP> )
-- You can also use CLI Method : cutl http://<EXTERNAL_IP>
+- You can also use CLI Method : curl http://<EXTERNAL_IP>
 ---
 
