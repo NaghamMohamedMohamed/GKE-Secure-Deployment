@@ -59,6 +59,9 @@ cd GKE-Secure-Deployment
 ### 🔐 2. Authenticate with GCP
 
 ```bash
+# This needs to be run in every new terminal session to use gcloud commands. (Provide the full path to this file if it's located in a different directory than the working directory.)
+source ./.bashrc
+
 gcloud init
 gcloud auth login
 gcloud auth application-default login
